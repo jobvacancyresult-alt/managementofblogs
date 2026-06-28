@@ -1,0 +1,19 @@
+▲ Next.js 16.2.1 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 10.7s
+  Running TypeScript ...
+Failed to type check.
+
+./app/api/media/route.ts:27:11
+Type error: Cannot find name 'connectDB'.
+
+  [90m25 |[0m [36mexport[0m [36masync[0m [36mfunction[0m [33mPOST[0m(req: [33mNextRequest[0m) {
+  [90m26 |[0m   [36mtry[0m {
+[31m[1m>[0m [90m27 |[0m     [36mawait[0m connectDB()
+  [90m   |[0m           [31m[1m^[0m
+  [90m28 |[0m     [36mconst[0m formData = [36mawait[0m req.formData()
+  [90m29 |[0m     [36mconst[0m file = formData.get([32m'file'[0m) [36mas[0m [33mFile[0m
+  [90m30 |[0m
+Next.js build worker exited with code: 1 and signal: null

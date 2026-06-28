@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  name          String?
+  email         String     @unique
+  password      String
+  avatar        String?
+  role          String     @default("writer")
+  image         String?
+  emailVerified DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime?  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  blogs    Blog[]
+
+  @@map("users")
+}
+
+model Blog {
+  id               Int       @id @default(autoincrement())
+  title            String
+  titleHtml        String?   @db.Text
+  slug             String
+  description      String?   @db.Text
+  content          String    @db.Text
+  featuredImage    String?
+  featuredImageAlt String?
+  category         String?
+  tags             String?
+  metaTitle        String?
+  metaDescription  String?
+  canonicalUrl     String?
+  ogTitle          String?
+  ogDescription    String?
+  ogImage          String?
+  status           String    @default("draft")
+  readTime         String?
+  views            Int       @default(0)
+  audioUrl         String?
+  audioTitle       String?
+  audioDuration    String?
+  publishDate      DateTime? 
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+
+  author   User? @relation(fields: [authorId], references: [id])
+  authorId Int?
+  site     Site? @relation(fields: [siteId], references: [id])
+  siteId   Int?   @map("site_id")
+
+  @@unique([slug, siteId])
+  @@index([slug])
+  @@map("blog")
+}
+
+model Site {
+  id        Int    @id @default(autoincrement())
+  name      String
+  slug      String @unique
+  domain    String?
+  shortName String?
+
+  blogs Blog[]
+
+  @@map("sites")
+}
+
+model Media {
+  id         Int      @id @default(autoincrement())
+  filename   String?
+  url        String
+  publicId   String?
+  width      Int?
+  height     Int?
+  format     String?
+  size       BigInt?
+  uploadedAt DateTime @default(now())
+
+  @@map("media")
+}
+
+model Account {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String     @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

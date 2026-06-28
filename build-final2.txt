@@ -1,0 +1,23 @@
+
+> blog-cms@0.1.0 build
+> next build
+
+▲ Next.js 16.2.1 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 12.2s
+  Running TypeScript ...
+Failed to type check.
+
+./app/blog/[slug]/page.tsx:103:20
+Type error: Operator '>' cannot be applied to types 'string' and 'number'.
+
+  [90m101 |[0m                     year: [32m'numeric'[0m, month: [32m'long'[0m, day: [32m'numeric'[0m
+  [90m102 |[0m                   })}</span>
+[31m[1m>[0m [90m103 |[0m                   {blog.readTime > [35m0[0m && <span>· {[33mNumber[0m(blog.readTime)} min read</span>}
+  [90m    |[0m                    [31m[1m^[0m
+  [90m104 |[0m                   <span>· {[33mNumber[0m(blog.views)} views</span>
+  [90m105 |[0m                 </div>
+  [90m106 |[0m               </div>
+Next.js build worker exited with code: 1 and signal: null

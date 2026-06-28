@@ -1,0 +1,23 @@
+
+> blog-cms@0.1.0 build
+> next build
+
+▲ Next.js 16.2.1 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 12.0s
+  Running TypeScript ...
+Failed to type check.
+
+./app/blog/[slug]/page.tsx:47:9
+Type error: Type 'Date' is not assignable to type 'string'.
+
+  [90m45 |[0m         image={blog.featuredImage || [32m''[0m}
+  [90m46 |[0m         authorName={blog.author?.name || [32m'Author'[0m}
+[31m[1m>[0m [90m47 |[0m         publishDate={blog.publishDate}
+  [90m   |[0m         [31m[1m^[0m
+  [90m48 |[0m         updatedDate={blog.updatedAt}
+  [90m49 |[0m         category={blog.category || [32m''[0m}
+  [90m50 |[0m       />
+Next.js build worker exited with code: 1 and signal: null
