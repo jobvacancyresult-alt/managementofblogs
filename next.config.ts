@@ -2,9 +2,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
+
   images: {
     remotePatterns: [
       {
@@ -17,8 +15,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
   compress: true,
   poweredByHeader: false,
+
   async headers() {
     return [
       {
@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'GET,POST,PUT,DELETE,OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
         ],
       },
     ]

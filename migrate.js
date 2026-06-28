@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb')
 const mysql = require('mysql2/promise')
 const MONGODB_URI = 'mongodb+srv://blogadmin:blogadmin123@blog-cms.0epqmn7.mongodb.net/blog-cms?retryWrites=true&w=majority'
 const mysqlConfig = {
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'root',
   password: '',
   database: 'blog_cms',
