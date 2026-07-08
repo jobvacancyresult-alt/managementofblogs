@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { SITES } from '@/lib/sites'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const sites = await prisma.site.findMany({ orderBy: { id: 'asc' } })
