@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import prisma from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminDashboard() {
   const totalBlogs = await prisma.blog.count()
   const publishedBlogs = await prisma.blog.count({ where: { status: 'published' } })
