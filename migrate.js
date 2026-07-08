@@ -51,7 +51,7 @@ async function migrate() {
   await mongoClient.connect()
   const db = mongoClient.db('blog-cms')
   console.log(' Connecting to MySQL...')
-  const conn = await mysql.createConnection(mysqlConfig)
+  const conn = mysql.createPool(mysqlConfig)
   // ===== USERS =====
   console.log('👤 Migrating users...')
   const users = await db.collection('users').find({}).toArray()
@@ -74,21 +74,41 @@ async function migrate() {
 
   // ===== MEDIA =====
   console.log(' Migrating media...')
-  const media = await db.collection('media').find({}).toArray()
-  for (const item of media) {
-    await conn.execute(
+  const mediaCursor = db.collection('media').find({})
+  let mediaChunk = []
+  let mediaCount = 0
+  while (await mediaCursor.hasNext()) {
+    const item = await mediaCursor.next()
+    mediaChunk.push([
+      item.filename || '',
+      item.url || '',
+      item.publicId || '',
+      item.size || 0
+    ])
+    mediaCount++
+    if (mediaChunk.length >= 100) {
+      const placeholders = mediaChunk.map(() => '(?, ?, ?, ?)').join(', ')
+      const flatValues = mediaChunk.flat()
+      await conn.query(
+        `INSERT INTO media (filename, url, publicId, size)
+         VALUES ${placeholders}
+         ON DUPLICATE KEY UPDATE url=VALUES(url)`,
+        flatValues
+      )
+      mediaChunk = []
+    }
+  }
+  if (mediaChunk.length > 0) {
+    const placeholders = mediaChunk.map(() => '(?, ?, ?, ?)').join(', ')
+    const flatValues = mediaChunk.flat()
+    await conn.query(
       `INSERT INTO media (filename, url, publicId, size)
-       VALUES (?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE url=url`,
-      [
-        item.filename || '',
-        item.url || '',
-        item.publicId || '',
-        item.size || 0
-      ]
+       VALUES ${placeholders}
+       ON DUPLICATE KEY UPDATE url=VALUES(url)`,
+      flatValues
     )
   }
-  console.log(` Media migrated: ${media.length}`)
+  console.log(` Media migrated: ${mediaCount}`)
 
   console.log(' Seeding sites...')
   const [siteTableRows] = await conn.execute("SHOW TABLES LIKE 'sites'")

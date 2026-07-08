@@ -72,7 +72,7 @@ model Site {
 
   blogs Blog[]
 
-  @@map("sites")
+  @@map("site")
 }
 
 model Media {

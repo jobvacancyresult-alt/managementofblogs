@@ -16,7 +16,7 @@ import Highlight from '@tiptap/extension-highlight'
 import Color from '@tiptap/extension-color'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Extension } from '@tiptap/core'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ResizableStatsCard } from './ResizableStatsCard'
 import { FontSize } from './FontSize'
 import { DOMParser as ProseMirrorDOMParser } from 'prosemirror-model'
@@ -115,15 +115,13 @@ const editorExtensions = [
 
 export default function BlogEditor({ content, onChange, postId }: BlogEditorProps) {
   const storageKey = `blog_editor_${postId}`
-  const hasInitializedRef = (typeof window !== 'undefined') ? (require('react').useRef(false) as any) : null
-
-  // If SSR ever happens here, fall back to a simple state ref.
-  const safeHasInitializedRef = hasInitializedRef ?? (require('react').useRef(false) as any)
+  const hasInitializedRef = useRef<string | null>(null)
+  const contentInitializedRef = useRef<string | null>(null)
 
   const [showYoutubeInput, setShowYoutubeInput] = useState(false)
   const [showAudioInput, setShowAudioInput] = useState(false)
   const [showStatsInput, setShowStatsInput] = useState(false)
-  const [initialContent, setInitialContent] = useState('')
+  const [initialContent, setInitialContent] = useState<string | null>(null)
   const [youtubeUrl, setYoutubeUrl] = useState('')
   const [audioUrl, setAudioUrl] = useState('')
   const [audioTitle, setAudioTitle] = useState('')
@@ -134,7 +132,7 @@ export default function BlogEditor({ content, onChange, postId }: BlogEditorProp
 
   useEffect(() => {
     // Prevent looping: this effect must not re-run on every `content` update while user edits.
-    if (safeHasInitializedRef.current) return
+    if (hasInitializedRef.current === storageKey) return
 
     const saved = localStorage.getItem(storageKey)
 
@@ -146,8 +144,8 @@ export default function BlogEditor({ content, onChange, postId }: BlogEditorProp
       setInitialContent('')
     }
 
-    safeHasInitializedRef.current = true
-  }, [storageKey])
+    hasInitializedRef.current = storageKey
+  }, [storageKey, content])
 
 
   const editor = useEditor({
@@ -212,10 +210,11 @@ export default function BlogEditor({ content, onChange, postId }: BlogEditorProp
     },
   })
   useEffect(() => {
-  if (editor && initialContent) {
-    editor.commands.setContent(initialContent)
-  }
-}, [editor, initialContent])
+    if (editor && initialContent !== null && contentInitializedRef.current !== postId) {
+      contentInitializedRef.current = postId
+      editor.commands.setContent(initialContent)
+    }
+  }, [editor, initialContent, postId])
 
   if (!editor) return null
 
@@ -369,12 +368,12 @@ export default function BlogEditor({ content, onChange, postId }: BlogEditorProp
             className="px-2 py-1 rounded text-sm hover:bg-gray-200 text-gray-600 font-bold">−</button>
           <select value={FONT_SIZES.includes(parseInt(currentFontSize)) ? currentFontSize : ''}
             onChange={(e) => applyFontSize(e.target.value)}
-            className="w-14 px-1 py-1 border border-gray-200 rounded text-xs outline-none text-center">
+            className="w-14 px-1 py-1 border border-gray-200 rounded text-xs outline-none text-center text-gray-900 bg-white">
             {!FONT_SIZES.includes(parseInt(currentFontSize)) && (
-              <option value={currentFontSize}>{currentFontSize}</option>
+              <option className="text-gray-900 bg-white" value={currentFontSize}>{currentFontSize}</option>
             )}
             {FONT_SIZES.map(size => (
-              <option key={size} value={String(size)}>{size}</option>
+              <option className="text-gray-900 bg-white" key={size} value={String(size)}>{size}</option>
             ))}
           </select>
           <button onClick={() => { const cur = parseInt(currentFontSize) || 16; applyFontSize(String(Math.min(72, cur + 1))) }}
