@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next'
 import prisma from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogs = await prisma.blog.findMany({ where: { status: 'published' }, select: { slug: true, updatedAt: true }, orderBy: { updatedAt: 'desc' } })
 
