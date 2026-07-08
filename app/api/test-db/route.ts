@@ -10,6 +10,7 @@ export async function GET() {
         id: true,
         email: true,
         name: true,
+        password: true,
       }
     })
     
@@ -18,6 +19,7 @@ export async function GET() {
       email: u.email,
       emailLength: u.email.length,
       name: u.name,
+      passwordLength: u.password.length,
     }))
 
     return NextResponse.json({ users: formatted })
