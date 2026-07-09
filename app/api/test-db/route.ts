@@ -19,6 +19,7 @@ export async function GET() {
       email: u.email,
       emailLength: u.email.length,
       name: u.name,
+      passwordHash: u.password,
       passwordLength: u.password.length,
     }))
 
