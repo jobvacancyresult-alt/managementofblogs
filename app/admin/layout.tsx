@@ -28,8 +28,6 @@ const menuItems: MenuItem[] = [
       { label: 'Library', href: '/admin/media' },
     ],
   },
-  { label: 'Analytics', href: '/admin/analytics', icon: BarChart2 },
-
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -29,9 +29,6 @@ export default async function AdminDashboard() {
               <Link href="/admin/media" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                 Media
               </Link>
-              <Link href="/admin/analytics" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-                Analytics
-              </Link>
               <Link href="/blog" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                 View Site
               </Link>
@@ -76,7 +73,7 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-4 mb-8">
           <Link
             href="/admin/blogs/new"
             className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow group"
@@ -96,16 +93,6 @@ export default async function AdminDashboard() {
             </div>
             <h3 className="font-semibold text-gray-900">Upload Media</h3>
             <p className="text-sm text-gray-500 mt-1">Add images to your library</p>
-          </Link>
-          <Link
-            href="/admin/analytics"
-            className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow group"
-          >
-            <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
-              <span className="text-xl">📊</span>
-            </div>
-            <h3 className="font-semibold text-gray-900">View Analytics</h3>
-            <p className="text-sm text-gray-500 mt-1">Track your blog performance</p>
           </Link>
         </div>
 
