@@ -250,6 +250,33 @@ export default function EditBlogPage({ params }: { params: Promise<{ slug: strin
               )}
             </div>
 
+            {/* Category & Keywords */}
+            <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">Category & Keywords</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="text-xs text-gray-500 block mb-1">Category</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Marketing, AI, Case Study"
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    className="w-full text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 block mb-1">Keywords / Tags (comma separated)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. SEO, Growth, Marketing"
+                    value={form.tags}
+                    onChange={(e) => setForm({ ...form, tags: e.target.value })}
+                    className="w-full text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* SEO Settings */}
             <div className="bg-white border border-gray-200 rounded-xl p-5">
               <h3 className="text-sm font-semibold text-gray-900 mb-4">SEO Settings</h3>

@@ -279,6 +279,34 @@ const DRAFT_KEY = `blog_draft_${postId}`
                 <img src={form.featuredImage} alt="preview" className="mt-3 w-full rounded-lg object-cover h-32" />
               )}
             </div>
+
+            {/* Category & Keywords */}
+            <div className="bg-gray-900 border border-gray-700 rounded-xl p-5">
+              <h3 className="font-semibold mb-4">Category & Keywords</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="text-xs text-gray-400 block mb-1">Category</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Marketing, AI, Case Study"
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-400 block mb-1">Keywords / Tags (comma separated)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. SEO, Growth, Marketing"
+                    value={form.tags}
+                    onChange={(e) => setForm({ ...form, tags: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Publish destination */}
             <div className="bg-gray-900 border border-gray-700 rounded-xl p-5">
               <PublishSiteButtons
